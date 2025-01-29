@@ -7,7 +7,7 @@ public class SaudacaoUtil {
     }
 
     public static String saudar(int hora) {
-        if (hora >= 0 && hora <= 11) {
+        if (hora >= 5 && hora <= 11) {
             return "Bom dia";
         } else if(hora >= 12 && hora <= 17) {
             return "Boa tarde";
