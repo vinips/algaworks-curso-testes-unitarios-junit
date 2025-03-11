@@ -23,8 +23,8 @@ public class CarrinhoCompra {
 	}
 
 	public List<ItemCarrinhoCompra> getItens() {
+		return new ArrayList<>(this.itens);
 		//TODO deve retornar uma nova lista para que a antiga não seja alterada
-		return null;
 	}
 
 	public Cliente getCliente() {
@@ -32,6 +32,20 @@ public class CarrinhoCompra {
 	}
 
 	public void adicionarProduto(Produto produto, int quantidade) {
+		Objects.requireNonNull(produto);
+		if(quantidade <= 0){
+			throw new IllegalArgumentException("Quantidade insuficiente");
+		}
+
+		ItemCarrinhoCompra itemEncontrado = itens.stream()
+				.filter(item -> produto.getNome().equalsIgnoreCase(item.getProduto().getNome()))
+				.findAny()
+				.orElse(null);
+		if (itemEncontrado != null){
+
+		}
+
+
 		//TODO parâmetros não podem ser nulos, deve retornar uma exception
 		//TODO quantidade não pode ser menor que 1
 		//TODO deve incrementar a quantidade caso o produto já exista

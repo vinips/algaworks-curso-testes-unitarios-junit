@@ -37,7 +37,7 @@ public class Post {
         this.publicado = true;
     }
 
-    public void marcarComoPago() {
+    public void pagar() {
         this.pago = true;
     }
 
