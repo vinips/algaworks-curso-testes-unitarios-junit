@@ -38,9 +38,7 @@ public class CadastroPostTest {
     private ArgumentCaptor<Notificacao> notificacaoArgumentCaptor;
 
     @Spy
-    private Editor editor = new Editor(1L, "Vini", "vinicius@teste.com", BigDecimal.TEN, true);
-
-    private static final String CONTEUDO_POST = "Curso ensinando como realizar testes unitários com qualidade e eficiência...";
+    private Editor editor = EditorTestData.editorExistente().build();
 
     @Nested
     public class Criar {
@@ -51,7 +49,10 @@ public class CadastroPostTest {
             private final Ganhos ganhos = new Ganhos(BigDecimal.TEN, 1, BigDecimal.TEN);
 
             @Spy
-            private Post post = new Post("Treinando Testes Unitários", CONTEUDO_POST, editor, false, false);
+            private Post post = PostTestData.novoPost()
+                    .comAutor(editor)
+                    .comGanhos(ganhos)
+                    .build();
 
             @BeforeEach
             public void init() {
@@ -126,10 +127,10 @@ public class CadastroPostTest {
         @Nested
         public class EditarComPostValido {
 
-            private final String titulo = "Treinando Testes Unitários";
-
             @Spy
-            private Post post = new Post(1L, titulo, CONTEUDO_POST, editor, null, null, false, false);
+            private Post post = PostTestData.postExistente()
+                    .comAutor(editor)
+                    .build();
 
             @BeforeEach
             public void init() {
@@ -139,12 +140,14 @@ public class CadastroPostTest {
 
             @Test
             public void Dado_um_post_valido_Quando_editar_Entao_deve_alterar_post_salvo() {
-                Post postAtualizado = new Post(1L, "Reforçando Testes Unitários", "Conteudo Alterado", editor, null, null, false, false);
+                Post postAtualizado = PostTestData.postAtualizado()
+                        .comAutor(editor)
+                        .build();
 
                 Post postEditado = cadastroPost.editar(postAtualizado);
 
-                assertNotEquals(titulo, postEditado.getTitulo());
-                assertNotEquals(CONTEUDO_POST, postEditado.getConteudo());
+                assertNotEquals(PostTestData.TITULO, postEditado.getTitulo());
+                assertNotEquals(PostTestData.CONTEUDO_POST, postEditado.getConteudo());
 
                 verify(post).atualizarComDados(postAtualizado);
                 verify(armazenamentoPostMock).salvar(post);
@@ -156,7 +159,9 @@ public class CadastroPostTest {
         public class EditarComPostInexistente {
 
             @Spy
-            private Post post = new Post(99L, "Treinando Testes Unitários", CONTEUDO_POST, editor, null, null, false, false);
+            private Post post = PostTestData.postInexistente()
+                    .comAutor(editor)
+                    .build();
 
             @BeforeEach
             public void init() {
@@ -192,7 +197,9 @@ public class CadastroPostTest {
         public class RemoverComPostValido {
 
             @Spy
-            private Post post = new Post(1L, "Treinando Testes Unitários", CONTEUDO_POST, editor, null, null, false, false);
+            private Post post = PostTestData.postExistente()
+                    .comAutor(editor)
+                    .build();
 
             @BeforeEach
             public void init() {
@@ -234,7 +241,9 @@ public class CadastroPostTest {
         public class RemoverComPostInexistente {
 
             @Spy
-            private Post post = new Post(99L, "Treinando Testes Unitários", CONTEUDO_POST, editor, null, null, false, false);
+            private Post post = PostTestData.postInexistente()
+                    .comAutor(editor)
+                    .build();
 
             @BeforeEach
             public void init() {

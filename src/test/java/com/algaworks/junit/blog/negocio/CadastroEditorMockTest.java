@@ -35,7 +35,7 @@ public class CadastroEditorMockTest {
     public class CadastrarComEditorValido {
 
         @Spy
-        private Editor editor = new Editor(null, "Vini", "vinicius@teste.com", BigDecimal.TEN, true);
+        private Editor editor = EditorTestData.novoEditor().build();
 
         @BeforeEach
         public void beforeEach() {
@@ -72,8 +72,6 @@ public class CadastroEditorMockTest {
 
         @Test
         public void Dado_um_editor_valido_Quando_criar_Entao_Deve_enviar_email_com_destino_ao_editor() {
-//        ArgumentCaptor<Mensagem> mensagemArgumentCaptor = ArgumentCaptor.forClass(Mensagem.class);
-
             Editor editorSalvo = cadastroEditor.criar(editor);
 
             verify(gerenciadorEnvioEmailMock).enviarEmail(mensagemArgumentCaptor.capture());
@@ -93,7 +91,7 @@ public class CadastroEditorMockTest {
                     .thenReturn(Optional.empty())
                     .thenReturn(Optional.of(editor));
 
-            Editor editorComEmailExistente = new Editor(null, "Vini", "vinicius@teste.com", BigDecimal.TEN, true);
+            Editor editorComEmailExistente = EditorTestData.novoEditor().build();
 
             cadastroEditor.criar(editor);
             assertThrows(RegraNegocioException.class, () -> cadastroEditor.criar(editorComEmailExistente));
@@ -120,10 +118,10 @@ public class CadastroEditorMockTest {
     }
 
     @Nested
-    public class EdicaoComEditorValido {
+    public class EditarComEditorValido {
 
         @Spy
-        private Editor editor = new Editor(1L, "Vini", "vinicius@teste.com", BigDecimal.TEN, true);
+        private Editor editor = EditorTestData.editorExistente().build();
 
         @BeforeEach
         public void init() {
@@ -133,7 +131,8 @@ public class CadastroEditorMockTest {
 
         @Test
         public void Dado_um_editor_valido_Quando_editar_Entao_deve_alterar_editor_salvo() {
-            Editor editorAtualizado = new Editor(1L, "Vini Silveira", "vinicius.silveira@teste.com", BigDecimal.ZERO, false);
+            Editor editorAtualizado = EditorTestData.editorAtualizado().build();
+
             cadastroEditor.editar(editorAtualizado);
             verify(editor, times(1)).atualizarComDados(editorAtualizado);
 
@@ -146,9 +145,9 @@ public class CadastroEditorMockTest {
     }
 
     @Nested
-    public class EdicaoComEditorInexistente {
+    public class EditarComEditorInexistente {
 
-        private Editor editor = new Editor(99L, "Vini", "vinicius@teste.com", BigDecimal.TEN, true);
+        private Editor editor = EditorTestData.editorInexistente().build();
 
         @BeforeEach
         public void init() {
