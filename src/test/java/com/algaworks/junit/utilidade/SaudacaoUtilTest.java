@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,6 +58,15 @@ public class SaudacaoUtilTest {
     @Test
     public void Dado_um_horario_invalido_Quando_saudar_Entao_nao_deve_lancar_exception() {
         assertDoesNotThrow(() -> SaudacaoUtil.saudar(0));
+    }
+
+    //Passa os valores parametrizados com o tipo que vc quer e os dados
+    @ParameterizedTest
+    @ValueSource(ints = {5, 6, 7, 8, 9, 10, 11})
+    public void Dado_um_horario_matinal_Quando_saudar_Entao_deve_retornar_bom_dia(int hora) {
+        String saudacao = saudarTeste(hora);
+
+        assertEquals("Bom dia", saudacao, SAUDACAO_INCORRETA);
     }
 
 }
